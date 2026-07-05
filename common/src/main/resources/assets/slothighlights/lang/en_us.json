@@ -1,0 +1,14 @@
+{
+  "slothighlights.config.title": "Slot Highlights Config",
+  "slothighlights.hotbar.label": "Highlight hotbar slots",
+  "slothighlights.fullBorder.label": "Draw full border",
+  "slothighlights.squareCorners.label": "Square corners",
+  "slothighlights.overItems.label": "Draw over items",
+  "slothighlights.extraGlow.label": "Extra glow",
+  "slothighlights.highlightNamed.label": "Highlight named items",
+  "slothighlights.namedColor.label": "Named item color",
+  "slothighlights.highlightEnchanted.label": "Highlight enchanted items",
+  "slothighlights.enchantedColor.label": "Enchanted item color",
+  "slothighlights.highlightRarity.label": "Highlight items by rarity",
+  "slothighlights.highlightCommon.label": "Include common items"
+}
