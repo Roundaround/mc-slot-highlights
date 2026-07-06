@@ -9,6 +9,7 @@ allay {
   license.set("MIT")
   repository.set("https://github.com/Roundaround/mc-slot-highlights")
   issues.set("https://github.com/Roundaround/mc-slot-highlights/issues")
+  logoFile.set("assets/slothighlights/banner.png")
 
   release {
     versionType.set("release")
