@@ -1,18 +1,18 @@
 package me.roundaround.slothighlights.config;
 
-import java.util.List;
-import java.util.regex.Pattern;
-
 import me.roundaround.slothighlights.generated.Constants;
 import me.roundaround.trove.config.ConfigPath;
 import me.roundaround.trove.config.manage.ModConfigImpl;
 import me.roundaround.trove.config.manage.store.GameScopedFileStore;
 import me.roundaround.trove.config.option.BooleanConfigOption;
-import me.roundaround.trove.config.option.StringConfigOption;
+import me.roundaround.trove.config.option.ColorConfigOption;
 import me.roundaround.trove.config.option.StringListConfigOption;
+import me.roundaround.trove.util.Color;
+
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class SlotHighlightsConfig extends ModConfigImpl implements GameScopedFileStore {
-  private static final Pattern HEX_COLOR = Pattern.compile("#[0-9a-fA-F]{6}");
   private static final Pattern RARITY_OVERRIDE = Pattern.compile("[a-z0-9_.-]+=#[0-9a-fA-F]{6}");
 
   private static SlotHighlightsConfig instance = null;
@@ -30,9 +30,9 @@ public class SlotHighlightsConfig extends ModConfigImpl implements GameScopedFil
   public BooleanConfigOption overItems;
   public BooleanConfigOption extraGlow;
   public BooleanConfigOption highlightNamed;
-  public StringConfigOption namedColor;
+  public ColorConfigOption namedColor;
   public BooleanConfigOption highlightEnchanted;
-  public StringConfigOption enchantedColor;
+  public ColorConfigOption enchantedColor;
   public BooleanConfigOption highlightRarity;
   public BooleanConfigOption highlightCommon;
   public StringListConfigOption rarityColors;
@@ -68,16 +68,18 @@ public class SlotHighlightsConfig extends ModConfigImpl implements GameScopedFil
         .setDefaultValue(true)
         .setComment("Highlight custom-named items.")
         .build()).clientOnly().commit();
-    this.namedColor = this.buildRegistration(colorBuilder("namedColor", "#FFAA00")
+    this.namedColor = this.buildRegistration(ColorConfigOption.builder(ConfigPath.of("namedColor"))
+        .setDefaultValue(Color.parse("#FFAA00"))
         .setComment("Color for custom-named items (#RRGGBB).")
         .build()).clientOnly().commit();
 
     this.highlightEnchanted = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of(
-            "highlightEnchanted"))
+        "highlightEnchanted"))
         .setDefaultValue(false)
         .setComment("Highlight enchanted items with a dedicated color.")
         .build()).clientOnly().commit();
-    this.enchantedColor = this.buildRegistration(colorBuilder("enchantedColor", "#B24BF3")
+    this.enchantedColor = this.buildRegistration(ColorConfigOption.builder(ConfigPath.of("enchantedColor"))
+        .setDefaultValue(Color.parse("#B24BF3"))
         .setComment("Color for enchanted items (#RRGGBB).")
         .build()).clientOnly().commit();
 
@@ -95,9 +97,5 @@ public class SlotHighlightsConfig extends ModConfigImpl implements GameScopedFil
         .addValidator((value, option) -> value.stream().allMatch(RARITY_OVERRIDE.asMatchPredicate()))
         .hideFromConfigScreen()
         .build()).clientOnly().commit();
-  }
-
-  private static StringConfigOption.Builder colorBuilder(String id, String defaultValue) {
-    return StringConfigOption.builder(ConfigPath.of(id)).setDefaultValue(defaultValue).setRegex(HEX_COLOR);
   }
 }

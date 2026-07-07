@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import me.roundaround.slothighlights.config.SlotHighlightsConfig;
-import me.roundaround.trove.config.option.StringConfigOption;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -26,11 +25,11 @@ public final class HighlightResolver {
     SlotHighlightsConfig config = SlotHighlightsConfig.getInstance();
 
     if (config.highlightNamed.getPendingValue() && stack.has(DataComponents.CUSTOM_NAME)) {
-      return parseRgb(config.namedColor);
+      return config.namedColor.getPendingValue().rgb();
     }
 
     if (config.highlightEnchanted.getPendingValue() && isEnchanted(stack)) {
-      return parseRgb(config.enchantedColor);
+      return config.enchantedColor.getPendingValue().rgb();
     }
 
     if (!config.highlightRarity.getPendingValue()) {
@@ -76,11 +75,6 @@ public final class HighlightResolver {
       lastOverrideList = entries;
     }
     return overrides.get(rarity.getSerializedName());
-  }
-
-  private static Integer parseRgb(StringConfigOption option) {
-    Integer rgb = parseRgb(option.getPendingValue());
-    return rgb != null ? rgb : 0xFFFFFF;
   }
 
   private static Integer parseRgb(String value) {
