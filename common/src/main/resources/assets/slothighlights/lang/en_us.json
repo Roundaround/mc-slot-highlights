@@ -13,6 +13,8 @@
   "slothighlights.highlightCommon.label": "Include common items",
   "slothighlights.namedOverride.label": "Named items",
   "slothighlights.namedOverride.tooltip": "Highlight custom-named items with a dedicated color.",
+  "slothighlights.namedUseColorCode.label": "Use color code if present",
+  "slothighlights.namedUseColorCode.tooltip": "Inherit the highlight color from a color code at the start of the item's name.",
   "slothighlights.namedColor.label": "Named item color",
   "slothighlights.enchantedOverride.label": "Enchanted items",
   "slothighlights.enchantedOverride.tooltip": "Highlight enchanted items with a dedicated color.",

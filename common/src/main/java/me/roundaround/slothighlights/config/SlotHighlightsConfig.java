@@ -33,6 +33,7 @@ public class SlotHighlightsConfig extends ModConfigImpl implements GameScopedFil
   public BooleanConfigOption highlightCommon;
   public StringListConfigOption rarityColors;
   public BooleanConfigOption namedOverride;
+  public BooleanConfigOption namedUseColorCode;
   public ColorConfigOption namedColor;
   public BooleanConfigOption enchantedOverride;
   public ColorConfigOption enchantedColor;
@@ -82,6 +83,11 @@ public class SlotHighlightsConfig extends ModConfigImpl implements GameScopedFil
     this.namedOverride = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of("namedOverride"))
         .setDefaultValue(true)
         .setComment("Highlight custom-named items with a dedicated color.")
+        .build()).clientOnly().commit();
+    this.namedUseColorCode = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of(
+        "namedUseColorCode"))
+        .setDefaultValue(true)
+        .setComment("Use the color code from the item's name if present.")
         .build()).clientOnly().commit();
     this.namedColor = this.buildRegistration(ColorConfigOption.builder(ConfigPath.of("namedColor"))
         .setDefaultValue(Color.parse("#FFAA00"))

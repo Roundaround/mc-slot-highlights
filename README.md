@@ -20,7 +20,8 @@ screen as well as on the hotbar, and since it's fully client-side you can use it
 
 Each item is checked against three conditions, in order, and the first one that matches picks the border color:
 
-1. **Custom names** - Items renamed with an anvil get their own highlight, gold by default.
+1. **Custom names** - Items renamed with an anvil get their own highlight, gold by default. If the name starts with a
+   color code (or was given a color outright, e.g. by a server plugin), the highlight can inherit that color instead.
 2. **Enchanted** - Enchanted items (including enchanted books) can get a dedicated color. This one is off by default,
    since the game already bumps the rarity of enchanted items and they'll show up with a rarity highlight anyway.
 3. **Rarity** - Items are highlighted with their rarity's color: yellow for uncommon, aqua for rare, and light purple
@@ -56,6 +57,10 @@ underneath it. Default is `false`.
 
 **Highlight named items** (`namedOverride`): `true|false` - Whether to highlight items that have been given a custom
 name, e.g. with an anvil. Default is `true`.
+
+**Use color code if present** (`namedUseColorCode`): `true|false` - Whether a custom name that starts with a color
+code (or carries its own text color) lends that color to the highlight instead of the configured named item color.
+Default is `true`.
 
 **Named item color** (`namedColor`): `Hex color; #RRGGBB` - The highlight color for custom-named items. Default is
 `#FFAA00`.

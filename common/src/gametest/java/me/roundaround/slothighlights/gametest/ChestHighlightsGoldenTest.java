@@ -43,6 +43,11 @@ public class ChestHighlightsGoldenTest implements ClientTest {
           "item replace block " + at + " container.6 with" + " minecraft:diamond_sword[custom_name='\"Excalibur\"']");
       world.runCommand("item replace block " + at + " container.8 with" +
                        " minecraft:enchanted_book[stored_enchantments={\"minecraft:efficiency\":3}]");
+      // SNBT \\u escape — a raw § is an illegal chat character and the server rejects the command.
+      world.runCommand("item replace block " + at + " container.10 with" +
+                       " minecraft:iron_sword[custom_name=\"\\u00a7bFrostbrand\"]");
+      world.runCommand("item replace block " + at + " container.12 with" +
+                       " minecraft:golden_sword[custom_name={text:\"Sunfang\",color:\"red\"}]");
       context.waitTicks(2);
 
       ClientMenu chest = world.openMenu(chestPos, ContainerScreen.class);
@@ -53,7 +58,9 @@ public class ChestHighlightsGoldenTest implements ClientTest {
           Items.GOLDEN_APPLE,
           Items.ENCHANTED_GOLDEN_APPLE,
           Items.DIAMOND_SWORD,
-          Items.ENCHANTED_BOOK
+          Items.ENCHANTED_BOOK,
+          Items.IRON_SWORD,
+          Items.GOLDEN_SWORD
       );
 
       context.assertScreenshot(ScreenshotSpec.named("chest-highlights")

@@ -6,6 +6,10 @@ import java.util.Map;
 
 import me.roundaround.slothighlights.config.SlotHighlightsConfig;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.util.StringDecomposer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -25,6 +29,12 @@ public final class HighlightResolver {
     SlotHighlightsConfig config = SlotHighlightsConfig.getInstance();
 
     if (config.namedOverride.getPendingValue() && stack.has(DataComponents.CUSTOM_NAME)) {
+      if (config.namedUseColorCode.getPendingValue()) {
+        Integer nameColor = leadingNameColor(stack.get(DataComponents.CUSTOM_NAME));
+        if (nameColor != null) {
+          return nameColor;
+        }
+      }
       return config.namedColor.getPendingValue().rgb();
     }
 
@@ -50,6 +60,16 @@ public final class HighlightResolver {
     // automatically.
     Integer color = rarity.color().getColor();
     return color != null ? color & 0x00FFFFFF : 0xFFFFFF;
+  }
+
+  /** Color of the name's first visible char, via a leading legacy code or the component's own style. */
+  private static Integer leadingNameColor(Component name) {
+    TextColor[] first = new TextColor[1];
+    StringDecomposer.iterateFormatted(name, Style.EMPTY, (index, style, codePoint) -> {
+      first[0] = style.getColor();
+      return false;
+    });
+    return first[0] != null ? first[0].getValue() & 0x00FFFFFF : null;
   }
 
   private static boolean isEnchanted(ItemStack stack) {
