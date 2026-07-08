@@ -18,13 +18,17 @@ screen as well as on the hotbar, and since it's fully client-side you can use it
 
 ## Highlight conditions
 
-Each item is checked against three conditions, in order, and the first one that matches picks the border color:
+Each item is checked against four conditions, in order, and the first one that matches picks the border color:
 
-1. **Custom names** - Items renamed with an anvil get their own highlight, gold by default. If the name starts with a
+1. **`slot_highlight` NBT tag** - Map makers, datapacks, and server plugins can pick an item's highlight color
+   directly by adding a `slot_highlight` string to its custom NBT data, either a hex color like `"#00FF7F"` or one of
+   the 16 vanilla text color names like `"green"`. For example:
+   `/give @s minecraft:stick[custom_data={slot_highlight:"#00FF7F"}]`
+2. **Custom names** - Items renamed with an anvil get their own highlight, gold by default. If the name starts with a
    color code (or was given a color outright, e.g. by a server plugin), the highlight can inherit that color instead.
-2. **Enchanted** - Enchanted items (including enchanted books) can get a dedicated color. This one is off by default,
+3. **Enchanted** - Enchanted items (including enchanted books) can get a dedicated color. This one is off by default,
    since the game already bumps the rarity of enchanted items and they'll show up with a rarity highlight anyway.
-3. **Rarity** - Items are highlighted with their rarity's color: yellow for uncommon, aqua for rare, and light purple
+4. **Rarity** - Items are highlighted with their rarity's color: yellow for uncommon, aqua for rare, and light purple
    for epic. The color is read straight from the rarity itself, so if another mod adds its own rarities, those will
    highlight with the right colors without any extra setup. Common items are skipped by default to keep your inventory
    from turning into a wall of white borders.
@@ -54,6 +58,10 @@ the corner pixels are clipped for a beveled look. Default is `false`.
 `false`.
 
 **Under glow** (`underGlow`): `true|false` - Whether to add a soft glow under the items. Default is `true`.
+
+**NBT-tagged items** (`nbtOverride`): `true|false` - Whether an item's `slot_highlight` NBT tag picks the highlight
+color. A valid tag beats every other condition; an invalid or missing one falls through to the rules below. Default is
+`true`.
 
 **Highlight items by rarity** (`highlightRarity`): `true|false` - Whether to highlight items using their rarity's
 color. The color is read from the rarity itself, so modded rarities use their own colors automatically. Default is

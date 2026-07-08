@@ -9,6 +9,8 @@
   "slothighlights.overItems.tooltip": "Draw borders over items instead of under.",
   "slothighlights.underGlow.label": "Under glow",
   "slothighlights.underGlow.tooltip": "Square instead of beveled corners.",
+  "slothighlights.nbtOverride.label": "NBT-tagged items",
+  "slothighlights.nbtOverride.tooltip": "Let an item's slot_highlight NBT tag set the highlight color.",
   "slothighlights.highlightRarity.label": "Highlight items by rarity",
   "slothighlights.highlightCommon.label": "Include common items",
   "slothighlights.namedOverride.label": "Named items",

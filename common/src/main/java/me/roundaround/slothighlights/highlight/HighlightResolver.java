@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.util.StringDecomposer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
@@ -27,6 +28,13 @@ public final class HighlightResolver {
 
   public static Integer resolve(ItemStack stack) {
     SlotHighlightsConfig config = SlotHighlightsConfig.getInstance();
+
+    if (config.nbtOverride.getPendingValue()) {
+      Integer tagged = taggedColor(stack);
+      if (tagged != null) {
+        return tagged;
+      }
+    }
 
     if (config.namedOverride.getPendingValue() && stack.has(DataComponents.CUSTOM_NAME)) {
       if (config.namedUseColorCode.getPendingValue()) {
@@ -60,6 +68,19 @@ public final class HighlightResolver {
     // automatically.
     Integer color = rarity.color().getColor();
     return color != null ? color & 0x00FFFFFF : 0xFFFFFF;
+  }
+
+  /** Color from a slot_highlight string in custom NBT data: "#RRGGBB" or a vanilla color name. */
+  private static Integer taggedColor(ItemStack stack) {
+    CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+    if (data == null || data.isEmpty()) {
+      return null;
+    }
+    return data.copyTag()
+        .getString("slot_highlight")
+        .flatMap(value -> TextColor.parseColor(value).result())
+        .map(color -> color.getValue() & 0x00FFFFFF)
+        .orElse(null);
   }
 
   /** Color of the name's first visible char, via a leading legacy code or the component's own style. */

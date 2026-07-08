@@ -29,6 +29,7 @@ public class SlotHighlightsConfig extends ModConfigImpl implements GameScopedFil
   public BooleanConfigOption squareCorners;
   public BooleanConfigOption overItems;
   public BooleanConfigOption underGlow;
+  public BooleanConfigOption nbtOverride;
   public BooleanConfigOption highlightRarity;
   public BooleanConfigOption highlightCommon;
   public StringListConfigOption rarityColors;
@@ -63,6 +64,11 @@ public class SlotHighlightsConfig extends ModConfigImpl implements GameScopedFil
     this.underGlow = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of("underGlow"))
         .setDefaultValue(true)
         .setComment("Add a soft glow under the items.")
+        .build()).clientOnly().commit();
+
+    this.nbtOverride = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of("nbtOverride"))
+        .setDefaultValue(true)
+        .setComment("Let an item's slot_highlight NBT tag set the highlight color.")
         .build()).clientOnly().commit();
 
     this.highlightRarity = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of("highlightRarity"))

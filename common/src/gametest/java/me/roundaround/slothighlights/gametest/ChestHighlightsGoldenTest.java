@@ -48,6 +48,11 @@ public class ChestHighlightsGoldenTest implements ClientTest {
                        " minecraft:iron_sword[custom_name=\"\\u00a7bFrostbrand\"]");
       world.runCommand("item replace block " + at + " container.12 with" +
                        " minecraft:golden_sword[custom_name={text:\"Sunfang\",color:\"red\"}]");
+      world.runCommand("item replace block " + at + " container.14 with" +
+                       " minecraft:stick[custom_data={slot_highlight:\"#00FF7F\"}]");
+      // Tag (green) must win over the name's §c red.
+      world.runCommand("item replace block " + at + " container.16 with" +
+                       " minecraft:netherite_hoe[custom_name=\"\\u00a7cDoom\",custom_data={slot_highlight:\"green\"}]");
       context.waitTicks(2);
 
       ClientMenu chest = world.openMenu(chestPos, ContainerScreen.class);
@@ -60,7 +65,9 @@ public class ChestHighlightsGoldenTest implements ClientTest {
           Items.DIAMOND_SWORD,
           Items.ENCHANTED_BOOK,
           Items.IRON_SWORD,
-          Items.GOLDEN_SWORD
+          Items.GOLDEN_SWORD,
+          Items.STICK,
+          Items.NETHERITE_HOE
       );
 
       context.assertScreenshot(ScreenshotSpec.named("chest-highlights")
