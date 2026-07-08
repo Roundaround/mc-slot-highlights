@@ -1,14 +1,20 @@
 {
   "slothighlights.config.title": "Slot Highlights Config",
   "slothighlights.hotbar.label": "Highlight hotbar slots",
-  "slothighlights.fullBorder.label": "Draw full border",
+  "slothighlights.fullBorder.label": "Full border",
+  "slothighlights.fullBorder.tooltip": "Draw the full border instead of a bottom fade.",
   "slothighlights.squareCorners.label": "Square corners",
-  "slothighlights.overItems.label": "Draw over items",
-  "slothighlights.extraGlow.label": "Extra glow",
-  "slothighlights.highlightNamed.label": "Highlight named items",
-  "slothighlights.namedColor.label": "Named item color",
-  "slothighlights.highlightEnchanted.label": "Highlight enchanted items",
-  "slothighlights.enchantedColor.label": "Enchanted item color",
+  "slothighlights.squareCorners.tooltip": "Square instead of beveled corners.",
+  "slothighlights.overItems.label": "Over items",
+  "slothighlights.overItems.tooltip": "Draw borders over items instead of under.",
+  "slothighlights.underGlow.label": "Under glow",
+  "slothighlights.underGlow.tooltip": "Square instead of beveled corners.",
   "slothighlights.highlightRarity.label": "Highlight items by rarity",
-  "slothighlights.highlightCommon.label": "Include common items"
+  "slothighlights.highlightCommon.label": "Include common items",
+  "slothighlights.namedOverride.label": "Named items",
+  "slothighlights.namedOverride.tooltip": "Highlight custom-named items with a dedicated color.",
+  "slothighlights.namedColor.label": "Named item color",
+  "slothighlights.enchantedOverride.label": "Enchanted items",
+  "slothighlights.enchantedOverride.tooltip": "Highlight enchanted items with a dedicated color.",
+  "slothighlights.enchantedColor.label": "Enchanted item color"
 }

@@ -25,8 +25,8 @@ public class ChestHighlightsGoldenTest implements ClientTest {
     // The dev run dir may hold a saved config with non-default values.
     // Pin every pending value to its default, then opt into the enchanted ring.
     config.getAll().forEach(ConfigOption::setDefault);
-    config.highlightEnchanted.setValue(true);
-    context.onCleanup(() -> config.highlightEnchanted.setDefault());
+    config.enchantedOverride.setValue(true);
+    context.onCleanup(() -> config.enchantedOverride.setDefault());
 
     try (ClientWorld world = context.worldBuilder().create()) {
       context.stabilizeForScreenshots();

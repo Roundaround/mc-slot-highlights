@@ -28,14 +28,14 @@ public class SlotHighlightsConfig extends ModConfigImpl implements GameScopedFil
   public BooleanConfigOption fullBorder;
   public BooleanConfigOption squareCorners;
   public BooleanConfigOption overItems;
-  public BooleanConfigOption extraGlow;
-  public BooleanConfigOption highlightNamed;
-  public ColorConfigOption namedColor;
-  public BooleanConfigOption highlightEnchanted;
-  public ColorConfigOption enchantedColor;
+  public BooleanConfigOption underGlow;
   public BooleanConfigOption highlightRarity;
   public BooleanConfigOption highlightCommon;
   public StringListConfigOption rarityColors;
+  public BooleanConfigOption namedOverride;
+  public ColorConfigOption namedColor;
+  public BooleanConfigOption enchantedOverride;
+  public ColorConfigOption enchantedColor;
 
   private SlotHighlightsConfig() {
     super(Constants.MOD_ID, "client");
@@ -52,35 +52,16 @@ public class SlotHighlightsConfig extends ModConfigImpl implements GameScopedFil
         .setComment("Draw the full border instead of a bottom fade.")
         .build()).clientOnly().commit();
     this.squareCorners = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of("squareCorners"))
-        .setDefaultValue(true)
+        .setDefaultValue(false)
         .setComment("Square instead of beveled corners.")
         .build()).clientOnly().commit();
     this.overItems = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of("overItems"))
         .setDefaultValue(false)
         .setComment("Draw borders over items instead of under.")
         .build()).clientOnly().commit();
-    this.extraGlow = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of("extraGlow"))
-        .setDefaultValue(false)
-        .setComment("Add a soft inner glow.")
-        .build()).clientOnly().commit();
-
-    this.highlightNamed = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of("highlightNamed"))
+    this.underGlow = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of("underGlow"))
         .setDefaultValue(true)
-        .setComment("Highlight custom-named items.")
-        .build()).clientOnly().commit();
-    this.namedColor = this.buildRegistration(ColorConfigOption.builder(ConfigPath.of("namedColor"))
-        .setDefaultValue(Color.parse("#FFAA00"))
-        .setComment("Color for custom-named items (#RRGGBB).")
-        .build()).clientOnly().commit();
-
-    this.highlightEnchanted = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of(
-        "highlightEnchanted"))
-        .setDefaultValue(false)
-        .setComment("Highlight enchanted items with a dedicated color.")
-        .build()).clientOnly().commit();
-    this.enchantedColor = this.buildRegistration(ColorConfigOption.builder(ConfigPath.of("enchantedColor"))
-        .setDefaultValue(Color.parse("#B24BF3"))
-        .setComment("Color for enchanted items (#RRGGBB).")
+        .setComment("Add a soft glow under the items.")
         .build()).clientOnly().commit();
 
     this.highlightRarity = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of("highlightRarity"))
@@ -94,8 +75,27 @@ public class SlotHighlightsConfig extends ModConfigImpl implements GameScopedFil
     this.rarityColors = this.buildRegistration(StringListConfigOption.builder(ConfigPath.of("rarityColors"))
         .setDefaultValue(List.of())
         .setComment("Per-rarity color overrides, e.g. \"epic=#FF55FF\".")
-        .addValidator((value, option) -> value.stream().allMatch(RARITY_OVERRIDE.asMatchPredicate()))
+        .addValidator((value, _) -> value.stream().allMatch(RARITY_OVERRIDE.asMatchPredicate()))
         .hideFromConfigScreen()
+        .build()).clientOnly().commit();
+
+    this.namedOverride = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of("namedOverride"))
+        .setDefaultValue(true)
+        .setComment("Highlight custom-named items with a dedicated color.")
+        .build()).clientOnly().commit();
+    this.namedColor = this.buildRegistration(ColorConfigOption.builder(ConfigPath.of("namedColor"))
+        .setDefaultValue(Color.parse("#FFAA00"))
+        .setComment("Color for custom-named items (#RRGGBB).")
+        .build()).clientOnly().commit();
+
+    this.enchantedOverride = this.buildRegistration(BooleanConfigOption.yesNoBuilder(ConfigPath.of(
+        "enchantedOverride"))
+        .setDefaultValue(false)
+        .setComment("Highlight enchanted items with a dedicated color.")
+        .build()).clientOnly().commit();
+    this.enchantedColor = this.buildRegistration(ColorConfigOption.builder(ConfigPath.of("enchantedColor"))
+        .setDefaultValue(Color.parse("#B24BF3"))
+        .setComment("Color for enchanted items (#RRGGBB).")
         .build()).clientOnly().commit();
   }
 }

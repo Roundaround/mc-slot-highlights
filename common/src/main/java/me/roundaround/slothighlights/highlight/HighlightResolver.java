@@ -24,11 +24,11 @@ public final class HighlightResolver {
   public static Integer resolve(ItemStack stack) {
     SlotHighlightsConfig config = SlotHighlightsConfig.getInstance();
 
-    if (config.highlightNamed.getPendingValue() && stack.has(DataComponents.CUSTOM_NAME)) {
+    if (config.namedOverride.getPendingValue() && stack.has(DataComponents.CUSTOM_NAME)) {
       return config.namedColor.getPendingValue().rgb();
     }
 
-    if (config.highlightEnchanted.getPendingValue() && isEnchanted(stack)) {
+    if (config.enchantedOverride.getPendingValue() && isEnchanted(stack)) {
       return config.enchantedColor.getPendingValue().rgb();
     }
 

@@ -45,7 +45,7 @@ public final class HighlightRenderer {
     }
     context.fill(x + inset, y + 15, x + 16 - inset, y + 16, bottomColor);
 
-    if (config.extraGlow.getPendingValue()) {
+    if (config.underGlow.getPendingValue()) {
       int topGlow = thirdAlpha(topColor);
       int bottomGlow = thirdAlpha(bottomColor);
       context.fillGradient(x + 1, y + 1, x + 2, y + 15, topGlow, bottomGlow);
