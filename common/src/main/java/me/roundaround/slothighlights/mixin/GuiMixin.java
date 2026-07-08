@@ -26,8 +26,8 @@ public abstract class GuiMixin {
       int seed,
       CallbackInfo ci
   ) {
-    if (slothighlights$isHotbarEnabled() && !slothighlights$isOverItems()) {
-      HighlightRenderer.render(graphics, itemStack, x, y);
+    if (slothighlights$isHotbarEnabled()) {
+      HighlightRenderer.renderUnder(graphics, itemStack, x, y);
     }
   }
 
@@ -42,8 +42,8 @@ public abstract class GuiMixin {
       int seed,
       CallbackInfo ci
   ) {
-    if (slothighlights$isHotbarEnabled() && slothighlights$isOverItems()) {
-      HighlightRenderer.render(graphics, itemStack, x, y);
+    if (slothighlights$isHotbarEnabled()) {
+      HighlightRenderer.renderOver(graphics, itemStack, x, y);
     }
   }
 
@@ -51,10 +51,5 @@ public abstract class GuiMixin {
   private static boolean slothighlights$isHotbarEnabled() {
     SlotHighlightsConfig config = SlotHighlightsConfig.getInstance();
     return config.isReady() && config.hotbar.getPendingValue();
-  }
-
-  @Unique
-  private static boolean slothighlights$isOverItems() {
-    return SlotHighlightsConfig.getInstance().overItems.getPendingValue();
   }
 }

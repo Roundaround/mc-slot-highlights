@@ -8,7 +8,8 @@ import net.minecraft.world.item.ItemStack;
 /**
  * Draws a 1px highlight border around a 16x16 slot at (x, y). By default the
  * border fades in toward the bottom of the slot; fullBorder draws the whole
- * ring at full strength.
+ * ring at full strength. Rendering is split into two passes: the glow always
+ * sits under the item, while overItems decides which pass draws the border.
  */
 public final class HighlightRenderer {
   private static final int BORDER_ALPHA = 0xEE000000;
@@ -16,21 +17,40 @@ public final class HighlightRenderer {
   private HighlightRenderer() {
   }
 
-  public static void render(GuiGraphicsExtractor context, ItemStack stack, int x, int y) {
-    if (stack.isEmpty()) {
-      return;
-    }
-
+  public static void renderUnder(GuiGraphicsExtractor context, ItemStack stack, int x, int y) {
     SlotHighlightsConfig config = SlotHighlightsConfig.getInstance();
-    if (!config.isReady()) {
-      return;
-    }
-
-    Integer rgb = HighlightResolver.resolve(stack);
+    Integer rgb = resolveColor(config, stack);
     if (rgb == null) {
       return;
     }
+    if (config.underGlow.getPendingValue()) {
+      drawGlow(context, config, rgb, x, y);
+    }
+    if (!config.overItems.getPendingValue()) {
+      drawBorder(context, config, rgb, x, y);
+    }
+  }
 
+  public static void renderOver(GuiGraphicsExtractor context, ItemStack stack, int x, int y) {
+    SlotHighlightsConfig config = SlotHighlightsConfig.getInstance();
+    if (!config.isReady() || !config.overItems.getPendingValue()) {
+      return;
+    }
+    Integer rgb = resolveColor(config, stack);
+    if (rgb == null) {
+      return;
+    }
+    drawBorder(context, config, rgb, x, y);
+  }
+
+  private static Integer resolveColor(SlotHighlightsConfig config, ItemStack stack) {
+    if (stack.isEmpty() || !config.isReady()) {
+      return null;
+    }
+    return HighlightResolver.resolve(stack);
+  }
+
+  private static void drawBorder(GuiGraphicsExtractor context, SlotHighlightsConfig config, int rgb, int x, int y) {
     boolean fullBorder = config.fullBorder.getPendingValue();
     int inset = config.squareCorners.getPendingValue() ? 0 : 1;
     // Fade style leaves the top edge fully transparent so the border fades
@@ -44,17 +64,19 @@ public final class HighlightRenderer {
       context.fill(x + inset, y, x + 16 - inset, y + 1, topColor);
     }
     context.fill(x + inset, y + 15, x + 16 - inset, y + 16, bottomColor);
+  }
 
-    if (config.underGlow.getPendingValue()) {
-      int topGlow = thirdAlpha(topColor);
-      int bottomGlow = thirdAlpha(bottomColor);
-      context.fillGradient(x + 1, y + 1, x + 2, y + 15, topGlow, bottomGlow);
-      context.fillGradient(x + 14, y + 1, x + 15, y + 15, topGlow, bottomGlow);
-      if (fullBorder) {
-        context.fill(x + 1, y + 1, x + 15, y + 2, topGlow);
-      }
-      context.fill(x + 1, y + 14, x + 15, y + 15, bottomGlow);
+  private static void drawGlow(GuiGraphicsExtractor context, SlotHighlightsConfig config, int rgb, int x, int y) {
+    boolean fullBorder = config.fullBorder.getPendingValue();
+    int topGlow = thirdAlpha(fullBorder ? (BORDER_ALPHA | rgb) : rgb);
+    int bottomGlow = thirdAlpha(BORDER_ALPHA | rgb);
+
+    context.fillGradient(x + 1, y + 1, x + 2, y + 15, topGlow, bottomGlow);
+    context.fillGradient(x + 14, y + 1, x + 15, y + 15, topGlow, bottomGlow);
+    if (fullBorder) {
+      context.fill(x + 1, y + 1, x + 15, y + 2, topGlow);
     }
+    context.fill(x + 1, y + 14, x + 15, y + 15, bottomGlow);
   }
 
   private static int thirdAlpha(int color) {

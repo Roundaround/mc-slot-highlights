@@ -57,7 +57,8 @@ the corner pixels are clipped for a beveled look. Default is `false`.
 **Over items** (`overItems`): `true|false` - Whether to draw borders over items instead of under them. Default is
 `false`.
 
-**Under glow** (`underGlow`): `true|false` - Whether to add a soft glow under the items. Default is `true`.
+**Under glow** (`underGlow`): `true|false` - Whether to add a soft glow under the items. The glow stays beneath the
+item even when `overItems` puts the border on top. Default is `true`.
 
 **NBT-tagged items** (`nbtOverride`): `true|false` - Whether an item's `slot_highlight` NBT tag picks the highlight
 color. A valid tag beats every other condition; an invalid or missing one falls through to the rules below. Default is

@@ -1,12 +1,10 @@
 package me.roundaround.slothighlights.mixin;
 
 import me.roundaround.slothighlights.client.HighlightRenderer;
-import me.roundaround.slothighlights.config.SlotHighlightsConfig;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.Slot;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,9 +19,7 @@ public abstract class AbstractContainerScreenMixin {
       int mouseY,
       CallbackInfo ci
   ) {
-    if (!slothighlights$isOverItems()) {
-      HighlightRenderer.render(graphics, slot.getItem(), slot.x, slot.y);
-    }
+    HighlightRenderer.renderUnder(graphics, slot.getItem(), slot.x, slot.y);
   }
 
   @Inject(method = "extractSlot", at = @At("TAIL"))
@@ -34,14 +30,6 @@ public abstract class AbstractContainerScreenMixin {
       int mouseY,
       CallbackInfo ci
   ) {
-    if (slothighlights$isOverItems()) {
-      HighlightRenderer.render(graphics, slot.getItem(), slot.x, slot.y);
-    }
-  }
-
-  @Unique
-  private static boolean slothighlights$isOverItems() {
-    SlotHighlightsConfig config = SlotHighlightsConfig.getInstance();
-    return config.isReady() && config.overItems.getPendingValue();
+    HighlightRenderer.renderOver(graphics, slot.getItem(), slot.x, slot.y);
   }
 }
