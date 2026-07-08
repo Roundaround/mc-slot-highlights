@@ -44,32 +44,16 @@ list's config button on NeoForge and Forge.
 **Highlight hotbar slots** (`hotbar`): `true|false` - Whether to also draw highlights on the hotbar and offhand slots.
 Default is `true`.
 
-**Draw full border** (`fullBorder`): `true|false` - Whether to draw the entire border ring at full strength. When
-`false`, the border instead fades from transparent at the top of the slot to opaque at the bottom. Default is `false`.
+**Full border** (`fullBorder`): `true|false` - Whether to draw the full border instead of a bottom fade. When `false`,
+the border fades from transparent at the top of the slot to opaque at the bottom. Default is `false`.
 
-**Square corners** (`squareCorners`): `true|false` - Whether to fill in the border's corner pixels. When `false`, the
-corners are clipped for a beveled look. Default is `false`.
+**Square corners** (`squareCorners`): `true|false` - Whether to use square instead of beveled corners. When `false`,
+the corner pixels are clipped for a beveled look. Default is `false`.
 
-**Draw over items** (`overItems`): `true|false` - Whether to draw the border on top of the item icon instead of
-underneath it. Default is `false`.
+**Over items** (`overItems`): `true|false` - Whether to draw borders over items instead of under them. Default is
+`false`.
 
 **Under glow** (`underGlow`): `true|false` - Whether to add a soft glow under the items. Default is `true`.
-
-**Highlight named items** (`namedOverride`): `true|false` - Whether to highlight items that have been given a custom
-name, e.g. with an anvil. Default is `true`.
-
-**Use color code if present** (`namedUseColorCode`): `true|false` - Whether a custom name that starts with a color
-code (or carries its own text color) lends that color to the highlight instead of the configured named item color.
-Default is `true`.
-
-**Named item color** (`namedColor`): `Hex color; #RRGGBB` - The highlight color for custom-named items. Default is
-`#FFAA00`.
-
-**Highlight enchanted items** (`enchantedOverride`): `true|false` - Whether to give enchanted items (including
-enchanted books) a dedicated highlight color instead of their rarity's. Default is `false`.
-
-**Enchanted item color** (`enchantedColor`): `Hex color; #RRGGBB` - The highlight color for enchanted items. Only
-applies when `enchantedOverride` is `true`. Default is `#B24BF3`.
 
 **Highlight items by rarity** (`highlightRarity`): `true|false` - Whether to highlight items using their rarity's
 color. The color is read from the rarity itself, so modded rarities use their own colors automatically. Default is
@@ -79,6 +63,22 @@ color. The color is read from the rarity itself, so modded rarities use their ow
 (white) items. Most items are common, so this gets noisy. Only applies when `highlightRarity` is `true`. Default is
 `false`.
 
-**Rarity color overrides** (`rarityColors`): `List[Text]; "<rarity>=#RRGGBB"` - Manual color overrides for individual
-rarities, keyed by rarity name, e.g. `"epic=#FF55FF"`. Works for modded rarities too. This option does not show up on
-the config screen and can only be edited in the config file. Default is `[]` (empty).
+**Rarity color overrides** (`rarityColors`): `List[Text]; "<rarity>=#RRGGBB"` - Per-rarity color overrides, keyed by
+rarity name, e.g. `"epic=#FF55FF"`. Works for modded rarities too. This option does not show up on the config screen
+and can only be edited in the config file. Default is `[]` (empty).
+
+**Named items** (`namedOverride`): `true|false` - Whether to highlight custom-named items (e.g. renamed with an anvil)
+with a dedicated color. Default is `true`.
+
+**Use color code if present** (`namedUseColorCode`): `true|false` - Whether a custom name that starts with a color
+code (or carries its own text color) lends that color to the highlight instead of the configured named item color.
+Only applies when `namedOverride` is `true`. Default is `true`.
+
+**Named item color** (`namedColor`): `Hex color; #RRGGBB` - The highlight color for custom-named items. Only applies
+when `namedOverride` is `true`. Default is `#FFAA00`.
+
+**Enchanted items** (`enchantedOverride`): `true|false` - Whether to highlight enchanted items (including enchanted
+books) with a dedicated color instead of their rarity's. Default is `false`.
+
+**Enchanted item color** (`enchantedColor`): `Hex color; #RRGGBB` - The highlight color for enchanted items. Only
+applies when `enchantedOverride` is `true`. Default is `#B24BF3`.
