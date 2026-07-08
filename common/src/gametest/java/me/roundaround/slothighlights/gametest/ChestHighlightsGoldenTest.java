@@ -26,7 +26,7 @@ public class ChestHighlightsGoldenTest implements ClientTest {
     // Pin every pending value to its default, then opt into the enchanted ring.
     config.getAll().forEach(ConfigOption::setDefault);
     config.enchantedOverride.setValue(true);
-    context.onCleanup(() -> config.enchantedOverride.setDefault());
+    context.onCleanup(() -> config.getAll().forEach(ConfigOption::setDefault));
 
     try (ClientWorld world = context.worldBuilder().create()) {
       context.stabilizeForScreenshots();
@@ -70,11 +70,50 @@ public class ChestHighlightsGoldenTest implements ClientTest {
           Items.NETHERITE_HOE
       );
 
-      context.assertScreenshot(ScreenshotSpec.named("chest-highlights")
-          .crop(Region.gui(GUI_LEFT, GUI_TOP, 176, 166))
-          .redact(slotGlintArea(4))
-          .redact(slotGlintArea(8)));
+      context.assertScreenshot(chestSpec("chest-highlights"));
+
+      config.fullBorder.setValue(true);
+      context.waitTicks(2);
+      context.assertScreenshot(chestSpec("chest-full-border"));
+
+      config.squareCorners.setValue(true);
+      context.waitTicks(2);
+      context.assertScreenshot(chestSpec("chest-full-border-square"));
+      config.fullBorder.setDefault();
+      config.squareCorners.setDefault();
+
+      config.overItems.setValue(true);
+      context.waitTicks(2);
+      context.assertScreenshot(chestSpec("chest-over-items"));
+      config.overItems.setDefault();
+
+      config.underGlow.setValue(false);
+      context.waitTicks(2);
+      context.assertScreenshot(chestSpec("chest-no-glow"));
+      config.underGlow.setDefault();
+
+      config.highlightCommon.setValue(true);
+      context.waitTicks(2);
+      context.assertScreenshot(chestSpec("chest-common-included"));
+      config.highlightCommon.setDefault();
+
+      // Both color-inheritance features off: every named/tagged item falls
+      // back to the flat namedColor gold, and the bare tagged stick loses
+      // its ring entirely.
+      config.nbtOverride.setValue(false);
+      config.namedUseColorCode.setValue(false);
+      context.waitTicks(2);
+      context.assertScreenshot(chestSpec("chest-tag-and-code-off"));
+      config.nbtOverride.setDefault();
+      config.namedUseColorCode.setDefault();
     }
+  }
+
+  private static ScreenshotSpec chestSpec(String name) {
+    return ScreenshotSpec.named(name)
+        .crop(Region.gui(GUI_LEFT, GUI_TOP, 176, 166))
+        .redact(slotGlintArea(4))
+        .redact(slotGlintArea(8));
   }
 
   private static void assertPresent(ClientMenu chest, Item... items) {
