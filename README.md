@@ -47,24 +47,24 @@ Default is `true`.
 `false`, the border instead fades from transparent at the top of the slot to opaque at the bottom. Default is `false`.
 
 **Square corners** (`squareCorners`): `true|false` - Whether to fill in the border's corner pixels. When `false`, the
-corners are clipped for a beveled look. Default is `true`.
+corners are clipped for a beveled look. Default is `false`.
 
 **Draw over items** (`overItems`): `true|false` - Whether to draw the border on top of the item icon instead of
 underneath it. Default is `false`.
 
-**Extra glow** (`extraGlow`): `true|false` - Whether to add a soft glow just inside the border. Default is `false`.
+**Under glow** (`underGlow`): `true|false` - Whether to add a soft glow under the items. Default is `true`.
 
-**Highlight named items** (`highlightNamed`): `true|false` - Whether to highlight items that have been given a custom
+**Highlight named items** (`namedOverride`): `true|false` - Whether to highlight items that have been given a custom
 name, e.g. with an anvil. Default is `true`.
 
 **Named item color** (`namedColor`): `Hex color; #RRGGBB` - The highlight color for custom-named items. Default is
 `#FFAA00`.
 
-**Highlight enchanted items** (`highlightEnchanted`): `true|false` - Whether to give enchanted items (including
+**Highlight enchanted items** (`enchantedOverride`): `true|false` - Whether to give enchanted items (including
 enchanted books) a dedicated highlight color instead of their rarity's. Default is `false`.
 
 **Enchanted item color** (`enchantedColor`): `Hex color; #RRGGBB` - The highlight color for enchanted items. Only
-applies when `highlightEnchanted` is `true`. Default is `#B24BF3`.
+applies when `enchantedOverride` is `true`. Default is `#B24BF3`.
 
 **Highlight items by rarity** (`highlightRarity`): `true|false` - Whether to highlight items using their rarity's
 color. The color is read from the rarity itself, so modded rarities use their own colors automatically. Default is
