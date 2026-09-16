@@ -14,5 +14,6 @@ allay {
   release {
     versionType.set("release")
     minecraftVersions("26.1".."26.1.2")
+    environments("client")
   }
 }
