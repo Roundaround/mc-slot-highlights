@@ -1,93 +1,31 @@
 ![Slot Highlights](https://raw.githubusercontent.com/Roundaround/mc-slot-highlights/refs/heads/main/assets/slothighlights-title-round.png)
 
-![](https://img.shields.io/badge/Loader-Fabric%20|%20Forge%20|%20NeoForge-313e51?style=for-the-badge)
-![](https://img.shields.io/badge/MC-26.1-313e51?style=for-the-badge)
-![](https://img.shields.io/badge/Side-Client-313e51?style=for-the-badge)
-
-[![Modrinth Downloads](https://img.shields.io/modrinth/dt/custom-paintings-mod?style=flat&logo=modrinth&color=00AF5C)](https://modrinth.com/mod/custom-paintings-mod)
-[![CurseForge Downloads](https://img.shields.io/curseforge/dt/1560408?style=flat&logo=curseforge&color=F16436)](https://www.curseforge.com/minecraft/mc-mods/rounds-custom-paintings)
 [![GitHub Repo stars](https://img.shields.io/github/stars/Roundaround/mc-slot-highlights?style=flat&logo=github)](https://github.com/Roundaround/mc-slot-highlights)
 
 [![Support me on Ko-fi](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/donate/kofi-singular-alt_vector.svg)](https://ko-fi.com/roundaround)
 
------
+Draws a colored border around inventory slots based on the item inside, so rare, renamed, and enchanted items are easy to spot. Fully client-side, so it works on any server.
 
-Ever lose track of the good stuff in a chest full of junk? Slot Highlights draws a colored border around inventory
-slots based on the item inside, so rare, renamed, and enchanted items are easy to spot. It works in every container
-screen as well as on the hotbar, and since it's fully client-side you can use it on any server.
+> **Status:** unreleased. Not yet on Modrinth or CurseForge, so `allay.modrinth`/`allay.curseforge` project IDs are unset, the publish tasks skip, and there are no store badges yet.
 
-## Highlight conditions
+## Building from source
 
-Each item is checked against four conditions, in order, and the first one that matches picks the border color:
+```sh
+./gradlew build
+```
 
-1. **`slot_highlight` NBT tag** - Map makers, datapacks, and server plugins can pick an item's highlight color
-   directly by adding a `slot_highlight` string to its custom NBT data, either a hex color like `"#00FF7F"` or one of
-   the 16 vanilla text color names like `"green"`. For example:
-   `/give @s minecraft:stick[custom_data={slot_highlight:"#00FF7F"}]`
-2. **Custom names** - Items renamed with an anvil get their own highlight, gold by default. If the name starts with a
-   color code (or was given a color outright, e.g. by a server plugin), the highlight can inherit that color instead.
-3. **Enchanted** - Enchanted items (including enchanted books) can get a dedicated color. This one is off by default,
-   since the game already bumps the rarity of enchanted items and they'll show up with a rarity highlight anyway.
-4. **Rarity** - Items are highlighted with their rarity's color: yellow for uncommon, aqua for rare, and light purple
-   for epic. The color is read straight from the rarity itself, so if another mod adds its own rarities, those will
-   highlight with the right colors without any extra setup. Common items are skipped by default to keep your inventory
-   from turning into a wall of white borders.
+Dev runs are per loader: `:fabric:runClient`, `:neoforge:runClient`, `:forge:runClient`, and the `runServer` equivalents. Game tests run with `./gradlew :fabric:runClientGameTests` and `:fabric:runServerGameTests`.
 
-## Border style
+The build is an [Allay](https://github.com/Roundaround/allay) consumer and bundles [Trove](https://github.com/Roundaround/trove). Shared code lives in `common/` and is added to each loader subproject via `srcDir`.
 
-By default the border fades in toward the bottom of the slot, which keeps things fairly subtle. If you want something
-bolder, you can draw the full ring instead, add an inner glow, bevel the corners, or draw the border on top of the item
-rather than behind it.
+## Contributing
 
-## Mod configuration
+Issues and pull requests are welcome at [the issue tracker](https://github.com/Roundaround/mc-slot-highlights/issues).
 
-All settings are client-side and live in `<minecraft directory>/config/slothighlights.toml`. The easiest way to change
-them is in game, either through [Mod Menu](https://modrinth.com/mod/modmenu)'s configure button on Fabric or the mod
-list's config button on NeoForge and Forge.
+- Branch from `main`, which tracks the newest supported Minecraft version. Older lines live on their own version-named branches.
+- Keep loader-agnostic code in `common/`; only genuinely loader-specific glue belongs in a loader subproject.
+- Run `./gradlew build` plus the Fabric game tests before opening a PR, and add a changelog entry under `changelogs/` named for the version you're targeting.
 
-**Highlight hotbar slots** (`hotbar`): `true|false` - Whether to also draw highlights on the hotbar and offhand slots.
-Default is `true`.
+## License
 
-**Full border** (`fullBorder`): `true|false` - Whether to draw the full border instead of a bottom fade. When `false`,
-the border fades from transparent at the top of the slot to opaque at the bottom. Default is `false`.
-
-**Square corners** (`squareCorners`): `true|false` - Whether to use square instead of beveled corners. When `false`,
-the corner pixels are clipped for a beveled look. Default is `false`.
-
-**Over items** (`overItems`): `true|false` - Whether to draw borders over items instead of under them. Default is
-`false`.
-
-**Under glow** (`underGlow`): `true|false` - Whether to add a soft glow under the items. The glow stays beneath the
-item even when `overItems` puts the border on top. Default is `true`.
-
-**NBT-tagged items** (`nbtOverride`): `true|false` - Whether an item's `slot_highlight` NBT tag picks the highlight
-color. A valid tag beats every other condition; an invalid or missing one falls through to the rules below. Default is
-`true`.
-
-**Highlight items by rarity** (`highlightRarity`): `true|false` - Whether to highlight items using their rarity's
-color. The color is read from the rarity itself, so modded rarities use their own colors automatically. Default is
-`true`.
-
-**Include common items** (`highlightCommon`): `true|false` - Whether rarity highlighting also applies to common
-(white) items. Most items are common, so this gets noisy. Only applies when `highlightRarity` is `true`. Default is
-`false`.
-
-**Rarity color overrides** (`rarityColors`): `List[Text]; "<rarity>=#RRGGBB"` - Per-rarity color overrides, keyed by
-rarity name, e.g. `"epic=#FF55FF"`. Works for modded rarities too. This option does not show up on the config screen
-and can only be edited in the config file. Default is `[]` (empty).
-
-**Named items** (`namedOverride`): `true|false` - Whether to highlight custom-named items (e.g. renamed with an anvil)
-with a dedicated color. Default is `true`.
-
-**Use color code if present** (`namedUseColorCode`): `true|false` - Whether a custom name that starts with a color
-code (or carries its own text color) lends that color to the highlight instead of the configured named item color.
-Only applies when `namedOverride` is `true`. Default is `true`.
-
-**Named item color** (`namedColor`): `Hex color; #RRGGBB` - The highlight color for custom-named items. Only applies
-when `namedOverride` is `true`. Default is `#FFAA00`.
-
-**Enchanted items** (`enchantedOverride`): `true|false` - Whether to highlight enchanted items (including enchanted
-books) with a dedicated color instead of their rarity's. Default is `false`.
-
-**Enchanted item color** (`enchantedColor`): `Hex color; #RRGGBB` - The highlight color for enchanted items. Only
-applies when `enchantedOverride` is `true`. Default is `#B24BF3`.
+[MIT](LICENSE)
